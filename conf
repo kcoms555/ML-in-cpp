@@ -1,0 +1,32 @@
+#옵션 설정법
+#input = '인풋 데이터 경로'
+#target = '타겟 데이터 경로'
+#w = (층) (row) (column) 'n층의 wT * n-1층의 출력 = n층의 net값의 일부'
+#b = (층) (row) (column) 'n층의 bias. n층 net값의 일부'
+#	#w와 b는 모두 -0.5 ~ 0.5 사이의 랜덤한 값으로 초기화됨
+#func = (층) (activation function) 'n층의 활성함수를 지정'
+#	#가능한 function : linear(y=x), sigmoid, tanh, threshold, x^3
+#lr = (value) 'learning rate값 지정'
+#repeat = (value) '반복 학습 수 지정'
+#ls = (value) 'layer size, 층의 갯수를 지정. 매우 중요한 옵션, 지정안할시 학습 오류. 단층망일 경우 1임.
+#print_csv = (true or false) 'true일시 csv파일로 x의 변화에 따라 어떻게 출력이 변하는지 보여줌. 두개의 입력과 하나의 출력일시에만 가능'
+#show_cost = (true or false) 'true일시 20회 학습할때마다 cost출력'
+#load = (true or false) 'true일시 학습된 w와 b를 특수해쉬함수를 거친 숫자파일을 로드함'
+#save = (true or false) 'true일시 학습된 w와 b를 특수해쉬함수를 거친 숫자파일에 저장함'
+input = data/XOR.input
+target = data/XOR.target
+w = 1 2 7
+w = 2 7 1
+b = 1 7 1
+b = 2 1 1
+func = 1 tanh
+func = 2 tanh
+#func = 1 threshold
+#func = 2 threshold
+lr = 0.1
+repeat = 10000
+ls = 2
+print_csv = true
+show_cost = true
+load = true
+save = true
