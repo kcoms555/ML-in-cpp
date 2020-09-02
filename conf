@@ -1,3 +1,26 @@
+#############################################################################################
+
+#Option guide
+
+#input = 'path of the input data file'
+#target = 'path of the target data file'
+
+#w = (-th layer) (number of rows) (number of columns) 'sets the shape of the weights of the -th layer'
+#b = (-th layer) (number of rows) (number of columns) 'sets the shape of the bias of the -th layer'
+##	Each variables in w and b are initialized between -0.5 and +0.5
+
+#func = (-th layer) (activation function) 'sets the activation function of -th layer'
+##	Available activation functions : linear(y=x), sigmoid, tanh, threshold, x3(y=x^3)
+
+#lr = (value) 'sets learning rate'
+#repeat = (value) 'sets the number of repetitions'
+#ls = (value) 'sets the layer size(the number of the layers). It is IMPORTANT SETTING. In the case of the single layer, set its value as 1.
+#print_csv = (true or false) 'If true, it prints a csv file which shows how the outputs changes as x changes. Only possible when the number of inputs is 2 and the number of outputs is 1.
+#load = (true or false) 'If true, it loads the file which is containing trained w and b'
+#save = (true or false) 'If true, it saves the file which is containing trained w and b'
+
+#############################################################################################
+
 #옵션 설정법
 #input = '인풋 데이터 경로'
 #target = '타겟 데이터 경로'
@@ -13,6 +36,8 @@
 #show_cost = (true or false) 'true일시 20회 학습할때마다 cost출력'
 #load = (true or false) 'true일시 학습된 w와 b를 특수해쉬함수를 거친 숫자파일을 로드함'
 #save = (true or false) 'true일시 학습된 w와 b를 특수해쉬함수를 거친 숫자파일에 저장함'
+
+#############################################################################################
 input = data/XOR.input
 target = data/XOR.target
 w = 1 2 7

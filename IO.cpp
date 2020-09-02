@@ -133,7 +133,7 @@ IO::IO(){
 		if(strcmp(token, "func")==0){
 			int layer = atoi(strtok(NULL, to));
 			const char * act_tmp = strtok(NULL, to);
-			printf("IO : set activate function[%d] %s\n", layer, act_tmp);
+			printf("IO : set activation function[%d] %s\n", layer, act_tmp);
 			activate_func[layer] = Func::get_func_by_name(act_tmp);
 		}
 		if(strcmp(token, "show_cost")==0){
