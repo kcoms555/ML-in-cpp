@@ -38,8 +38,8 @@
 #save = (true or false) 'true일시 학습된 w와 b를 특수해쉬함수를 거친 숫자파일에 저장함'
 
 #############################################################################################
-input = data/XOR.input
-target = data/XOR.target
+input = ../data/XOR.input
+target = ../data/XOR.target
 w = 1 2 7
 w = 2 7 1
 b = 1 7 1

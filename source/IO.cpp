@@ -24,8 +24,8 @@ bool IO::read(const char * file_path, Batch * batch, int type=0){
 	}
 	filep = fopen(file_path, "rt");
 	if(filep==NULL){
-		fprintf(fp, "file_path: '%s'\n", file_path);
-		return false;
+		fprintf(fp, "failed to read '%s'\n", file_path);
+		exit(1);
 	}
 	int row, column, count;
 	_MDATA data;
@@ -88,18 +88,18 @@ IO::IO(){
 		if(strcmp(token, "input")==0){
 			char * tmp = strtok(NULL, to);
 			read(tmp, &input_batch, DATA::INPUT);
-			printf("IO : read input %s\n", tmp);
+			printf("IO : reading input %s\n", tmp);
 		}
 		if(strcmp(token, "target")==0){
 			char * tmp = strtok(NULL, to);
 			read(tmp, &target_batch, DATA::TARGET);
-			printf("IO : read target %s\n", tmp);
+			printf("IO : reading target %s\n", tmp);
 		}
 		if(strcmp(token, "w")==0){
 			int layer = atoi(strtok(NULL, to));
 			int row = atoi(strtok(NULL, to));
 			int column = atoi(strtok(NULL, to));
-			printf("IO : set w[%d] %dby%d Matrix\n", layer, row, column);
+			printf("IO : setting w[%d] %dby%d Matrix\n", layer, row, column);
 			w[layer] = new Matrix(row, column);
 			char name[50];
 			sprintf(name, "weight%d", layer);
@@ -110,7 +110,7 @@ IO::IO(){
 			int layer = atoi(strtok(NULL, to));
 			int row = atoi(strtok(NULL, to));
 			int column = atoi(strtok(NULL, to));
-			printf("IO : set b[%d] %dby%d Matrix\n", layer, row, column);
+			printf("IO : setting b[%d] %dby%d Matrix\n", layer, row, column);
 			is_bias_using[layer]=true;
 			b[layer] = new Matrix(row, column);
 			char name[50];
@@ -120,37 +120,37 @@ IO::IO(){
 		}
 		if(strcmp(token, "lr")==0 || strcmp(token, "learning_rate")==0){
 			lr = atof(strtok(NULL, to));
-			printf("IO : set learning rate %f\n", lr);
+			printf("IO : setting learning rate %f\n", lr);
 		}
 		if(strcmp(token, "repeat")==0){
 			repeat = atoi(strtok(NULL, to));
-			printf("IO : set repeat %d\n", repeat);
+			printf("IO : setting repeat %d\n", repeat);
 		}
 		if(strcmp(token, "ls")==0 || strcmp(token, "layer_size")==0){
 			layer_size = atoi(strtok(NULL, to));
-			printf("IO : set layer_size %d\n", layer_size);
+			printf("IO : setting layer_size %d\n", layer_size);
 		}
 		if(strcmp(token, "func")==0){
 			int layer = atoi(strtok(NULL, to));
 			const char * act_tmp = strtok(NULL, to);
-			printf("IO : set activation function[%d] %s\n", layer, act_tmp);
+			printf("IO : setting activation function[%d] %s\n", layer, act_tmp);
 			activate_func[layer] = Func::get_func_by_name(act_tmp);
 		}
 		if(strcmp(token, "show_cost")==0){
 			if(strcmp("true", strtok(NULL, to))==0) show_cost=true;
-			printf("IO : set show_cost %d\n", show_cost);
+			printf("IO : setting show_cost %d\n", show_cost);
 		}
 		if(strcmp(token, "print_csv")==0){
 			if(strcmp("true", strtok(NULL, to))==0) print_csv=true;
-			printf("IO : set print_csv %d\n", print_csv);
+			printf("IO : setting print_csv %d\n", print_csv);
 		}
 		if(strcmp(token, "load")==0){
 			if(strcmp("true", strtok(NULL, to))==0) load=true;
-			printf("IO : set load %d\n", load);
+			printf("IO : setting load %d\n", load);
 		}
 		if(strcmp(token, "save")==0){
 			if(strcmp("true", strtok(NULL, to))==0) save=true;
-			printf("IO : set save %d\n", save);
+			printf("IO : setting save %d\n", save);
 		}
 	}
 	fclose(filep);

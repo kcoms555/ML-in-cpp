@@ -36,8 +36,8 @@ public:
 		is_initialized=false;
 		is_input_batch_initialized=false;
 		is_target_batch_initialized=false;
-		input_batch=NULL;
-		target_batch=NULL;
+		input_batch=nullptr;
+		target_batch=nullptr;
 		lr = 0.1;
 		weights = new Matrix*[layer_size+1];//0번 인덱스 사용 안함
 		d_weights = new Matrix*[layer_size+1];//0번 인덱스 사용 안함
@@ -121,7 +121,7 @@ public:
 			fx[i].set(x[i].apply(activate_func[i]));
 			//x[i].show();
 		}
-		if(end == layer_size){ //마지막 층까지 순전파가 진행될시 cost값을 계산 할 수 있으니 cost값을 계산
+		if(end == layer_size && is_target_batch_initialized == true){ //마지막 층까지 순전파가 진행될시 cost값을 계산 할 수 있으니 cost값을 계산
 			cost = (double)((*target)-fx[layer_size]).square().sum()/2;
 			//cost = ((t-o)^2)/2
 		}
@@ -175,7 +175,7 @@ public:
 	}
 	void show_case(){
 		if(!is_initialized) initialize();
-		rewind();
+		input_batch->rewind();
 		while(input=input_batch->peek()){
 			set_input(*input);
 			forward_propagation(START, END);

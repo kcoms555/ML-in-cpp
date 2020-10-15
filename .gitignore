@@ -30,3 +30,11 @@
 *.exe
 *.out
 *.app
+bin/runner
+bin/trainer
+
+# ML Model Files
+wb*
+
+# Output Files
+*.csv

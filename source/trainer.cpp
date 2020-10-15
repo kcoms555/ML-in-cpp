@@ -7,7 +7,7 @@
 #include "Layer.h" //Defines the format of machine leaning layers; 학습층을 구현한 객체
 #include "IO.h" //Defines the data loaders such as setting and weights, variables, inputs, targets, ... so on; 모든 설정값, 가중치, 편향, input, target을 불러오는 객체
 int main(int argc, char *argv[]){
-	IO io; //reads the file "conf" and loads settins; 이 생성자를 호출시 conf파일을 읽어 설정값을 불러옴
+	IO io; //reads the file "conf" and loads settings; 이 생성자를 호출시 conf파일을 읽어 설정값을 불러옴
 	Layer layer(io.layer_size); //sets the size of the layer; layer_size만큼 층의 크기를 설정
 	layer.set_input_batch(&io.input_batch); //feeds input batches into the layer; input 배치를 layer에 넣음
 	layer.set_target_batch(&io.target_batch); //feeds target batches into the layer; target 배치를 layer에 넣음
