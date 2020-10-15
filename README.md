@@ -62,6 +62,9 @@ show_cost = true
 load = true
 save = true
 ```
+The neural network will be built as shown in the picture below.
+![image](https://user-images.githubusercontent.com/48780754/96163881-6a00b480-0f55-11eb-92df-1f854f57ae65.png)
+
 __4. train and run__  
 Go to `./bin` and execute them.  
 `trainer`, `runner`  
