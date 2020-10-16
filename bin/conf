@@ -40,18 +40,18 @@
 #############################################################################################
 input = ../data/XOR.input
 target = ../data/XOR.target
-w = 1 2 7
-w = 2 7 1
-b = 1 7 1
+w = 1 2 8
+w = 2 8 1
+b = 1 8 1
 b = 2 1 1
 func = 1 tanh
-func = 2 tanh
+func = 2 x3
 #func = 1 threshold
 #func = 2 threshold
-lr = 0.1
+lr = 0.01
 repeat = 10000
 ls = 2
-print_csv = true
+print_csv = false
 show_cost = true
 load = true
 save = true

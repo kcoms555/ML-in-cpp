@@ -19,7 +19,7 @@ private:
 	_MDATA (**activate_func)(_MDATA input, _MDATA theta);
 	_MDATA *activate_func_input;
 	_MDATA *activate_func_theta;
-	double der, cost2, cost1, w2, w1, x2, x1, y2, y1;
+	double derivative, cost2, cost1, w2, w1, x2, x1, y2, y1;
 	double cost;
 	double lr;
 	int layer_size;
@@ -108,69 +108,63 @@ public:
 	}
 	void forward_propagation(int start, int end){ //start층 부터 end층까지 순전파
 		if(!is_initialized) initialize();
+
 		if(start < 0) start = layer_size + 1 + start;
 		if(end < 0) end = layer_size + 1 + end;
-		if(start != START){
-			fx[start].set(x[start].apply(activate_func[start]));
-		}
+
+		if(start != START) fx[start].set(x[start].apply(activate_func[start]));
+
 		for(int i=start+1; i<end+1; i++){
-			if(is_bias_using[i])
-				x[i].set((weights[i]->transpose() * fx[i-1])+ (*biases[i]));
-			else
-				x[i].set(weights[i]->transpose() * fx[i-1]);
+			if(is_bias_using[i]) x[i].set((weights[i]->transpose() * fx[i-1]) + (*biases[i]));
+			else x[i].set(weights[i]->transpose() * fx[i-1]);
 			fx[i].set(x[i].apply(activate_func[i]));
-			//x[i].show();
 		}
-		if(end == layer_size && is_target_batch_initialized == true){ //마지막 층까지 순전파가 진행될시 cost값을 계산 할 수 있으니 cost값을 계산
-			cost = (double)((*target)-fx[layer_size]).square().sum()/2;
-			//cost = ((t-o)^2)/2
-		}
+		if(end == layer_size && is_target_batch_initialized == true) //마지막 층까지 순전파가 진행될시 cost값을 계산 할 수 있으니 cost값을 계산
+			cost = (double)((*target)-fx[layer_size]).square().sum()/2; //cost = ((t-o)^2)/2
 	}
 	void back_propagation(){ //역전파
 		if(!is_initialized) initialize();
-		//printf("=======================================\n");
-		//input->show(); target->show(); fx[layer_size].show();
-		Matrix tfx;
-		_MDATA tfxsum;
+		if(!is_target_batch_initialized){
+			fprintf(stderr, "target_batch is not initialized!\n");
+			exit(1);
+		}
+
+		Matrix d_cost_d_fnet;
+		_MDATA d_cost_d_fnet_sum;
+
 		for(int k=layer_size;k>0;k--){
 			int row		=	x[k].get_row();
 			int column	=	x[k].get_column();
-			//printf("k=%d\n", k); weights[k]->show();
-			if(k==layer_size)
-				d_x[k].set(1.0);
-			else
-				d_x[k].set(*weights[k+1] * d_x[k+1]); //일단 앞 단계의 미분값을 가져옴
+
 			if(k==layer_size){
-				tfx = -(*target-fx[layer_size]);
-				tfxsum = tfx.sum();
-			}
+				d_cost_d_fnet = -(*target-fx[layer_size]);
+				d_cost_d_fnet_sum = d_cost_d_fnet.sum();
+			} else d_x[k].set(*weights[k+1] * d_x[k+1]); //d_x := w * (앞 단계의 미분값)
+
 			for(int i=0; i<row; i++){
 				for(int j=0; j<column; j++){
 					x1 = x[k].get(i,j);
 					x2 = x1 + fabs(x1*0.0000001);
 					y1 = activate_func[k](x1,activate_func_theta[k]);
 					y2 = activate_func[k](x2,activate_func_theta[k]);
-					//printf("%.4f %.4f %.4f %.4f\n", x1,x2,y1,y2);
-					if(k==layer_size){
-						if(activate_func[k]==Func::threshold) der = tfxsum*1;
-						else der = (tfx.get(i,j))*(y2-y1)/(x2-x1);
-					}
-						//else der = (-(*target-fx[layer_size]).sum())*(y2-y1)/(x2-x1);
-					else
-						if(activate_func[k]==Func::threshold) der = 1;
-						else der = (y2-y1)/(x2-x1);
-					d_x[k].set(i,j,d_x[k].get(i,j)*der); 
+
+					if(activate_func[k]==Func::threshold){
+						if(k==layer_size) derivative = d_cost_d_fnet_sum * 1;
+						else derivative = 1;
+					} else derivative = (y2-y1)/(x2-x1);
+
+					if(k==layer_size) d_x[k].set(i, j, derivative * d_cost_d_fnet.get(i,j)); 
+					else d_x[k].set(i, j, d_x[k].get(i,j) * derivative); // d_x := (w * 앞 단계의 미분값) * (현재 층 함수 미분값)
 				}
 			}
-			//x[k].show(); d_x[k].transpose().show(); ((fx[k-1])*(d_x[k].transpose())).show();
-			d_weights[k]->set(fx[k-1]*d_x[k].transpose());//d_w = d cost/d w
-			if(is_bias_using[k])
-				d_biases[k]->set(d_x[k]); //d_b = d cost/d b
 
-			weights[k]->sub(*d_weights[k] * lr); //w = w - d_w * learning_rate
-			if(is_bias_using[k])
-				biases[k]->sub(*d_biases[k] * lr); //b = b - d_b * learning_rate
-			//정적 변동 (나중에 동시에 변동됨)
+			d_weights[k]->set(fx[k-1]*d_x[k].transpose());//d_w := d cost/d w
+			weights[k]->sub(*d_weights[k] * lr); //w := w - d_w * learning_rate
+
+			if(is_bias_using[k]){
+				d_biases[k]->set(d_x[k]); //d_b = d cost/d b
+				biases[k]->sub(*d_biases[k] * lr); //b := b - d_b * learning_rate
+			}
 		}
 	}
 	void show_case(){
@@ -254,10 +248,11 @@ public:
 		}
 		is_initialized=true;
 	}
+	// 인공신경망 모델 구조를 해시 변환
 	unsigned int wb_to_value(){
 		unsigned int value=0;
 		for(int i=1; i<=layer_size; i++){
-			unsigned int a = weights[i]->get_row(); //input값도 고려하기 위해 weights를 씀
+			unsigned int a = weights[i]->get_row();
 			unsigned int b = weights[i]->get_column();
 			value += (((a>>b)^(b>>a))^value + a*3 + b)^value;
 			if(i>0) if(is_bias_using[i]){
