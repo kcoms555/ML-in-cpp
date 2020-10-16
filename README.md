@@ -1,6 +1,6 @@
 # ML-in-cpp
 This is my toy cpp project implementing machine learning such as forward and backward propagation.  
-It contains input, target batch files to train AND, OR, XOR operations.
+It contains input, target batch files to train AND, OR and XOR operations.
 
 # Installation
 __1. Download or clone it__
@@ -31,16 +31,16 @@ Open 'data/XOR.input' and write them
 0 0 <-- It will create a 2 by 1 matrix ((0), (0)). It always takes columns first.
 0 1
 1 0
-1 1cat 
+1 1 
 ```
 __2. Write a target batch for XOR__  
 Open 'data/XOR.target' and write them  
 ```
-2 1 4
-0 0
-0 1
-1 0
-1 1
+1 1 4
+0
+1
+1
+0
 ```
 __3. Set configuration file__  
 Open 'bin/conf' and set input as `../data/XOR.input` and set target as `../data/XOR.input`.  
@@ -66,6 +66,5 @@ The neural network will be built as shown in the picture below.
 ![image](https://user-images.githubusercontent.com/48780754/96163881-6a00b480-0f55-11eb-92df-1f854f57ae65.png)
 
 __4. train and run__  
-Go to `./bin` and execute them.  
-`trainer`, `runner`  
+Go to `./bin` and execute `trainer` and `runner`  
 ![pi_PI4_-__ML-in-cpp_bin-2020-10-16-01-52-26](https://user-images.githubusercontent.com/48780754/96161949-e34ad800-0f52-11eb-82b5-a0375cbb8d0c.gif)
