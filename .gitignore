@@ -38,3 +38,6 @@ wb*
 
 # Output Files
 *.csv
+
+# Swap Files
+*.swp
