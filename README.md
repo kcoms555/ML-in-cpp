@@ -68,3 +68,15 @@ The neural network will be built as shown in the picture below.
 __4. train and run__  
 Go to `./bin` and execute `trainer` and `runner`  
 ![pi_PI4_-__ML-in-cpp_bin-2020-10-16-01-52-26](https://user-images.githubusercontent.com/48780754/96161949-e34ad800-0f52-11eb-82b5-a0375cbb8d0c.gif)
+
+# Performance benchmarking
+![output3](https://user-images.githubusercontent.com/48780754/112509840-35323c80-8dd4-11eb-9869-28dc8221b3fc.gif)  
+
+- __Tensorflow 1.11.0 with Raspberry Pi 3 B+, running the sample code functionally identical to the XOR learning above__ : 46.753s  
+- __ML-in-cpp with Raspberry Pi 3 B+, running the XOR learning above__ : 6.040s  
+
+>_A configuration file of ML-in-cpp and the python(tensorflow) test code are in the test/_  
+
+>_Because of random initialization, they are not printing same costs. If you want to see that they print the same costs, initialize the weights with same values. You can do it by editting MATRIX::RAND in source/IO.cpp to the specified value and random_normal() in test/XOR.py to fill() with the specified value you want._  
+
+__ML-in-cpp__ is much faster than __tensorflow 1.11.0__ in that case by __7.74 times__  
