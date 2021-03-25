@@ -21,8 +21,8 @@ int main(int argc, char *argv[]){
 	printf("Cost before train = %f\n", layer.get_cost_sum());
 	FILE * fstep = fopen("step_cost.csv", "wt");
 	for(int i=0; i<io.repeat; i++){
+		if(io.show_cost && i%100==0) printf("%0.2f%% %d : Cost = %f\n", ((double)i/io.repeat)*100, i, layer.get_cost_sum());
 		layer.train(); //performs forward and backward propagation once each; 순전파, 역전파 각각 1회 실행
-		if(io.show_cost && i%200==0) printf("%0.2f%% %d : Cost = %f\n", ((double)i/io.repeat)*100, i, layer.get_cost_sum());
 		if(i%20==0) fprintf(fstep, "%d, %f\n",i, layer.get_cost_sum());
 	}
 	printf("Cost after train = %f\n", layer.get_cost_sum());
